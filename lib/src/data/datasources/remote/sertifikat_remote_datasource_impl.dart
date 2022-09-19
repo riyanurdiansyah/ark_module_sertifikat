@@ -15,7 +15,6 @@ class SertifikatRemoteDataSourceImpl implements SertifikatRemoteDataSource {
   Future<SertifikatDTO> getAllCertificate(String userId) async {
     final response = await dio.get("$sertifUrl/$userId");
     log("RESPONSE GET ALL CERTIFICATE : ${response.data}");
-    log("RESPONSE GET ALL CERTIFICATE : ${response.data}");
     int code = response.statusCode ?? 500;
     if (code >= 500) {
       throw CustomException(code, 'Error... failed connect to server');

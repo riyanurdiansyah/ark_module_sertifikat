@@ -231,9 +231,7 @@ class ArkSertifikatPage extends StatelessWidget {
                 index: _sC.indexTabSertif.value,
                 children: [
                   SertifikatPenyelesaianTab(),
-                  Container(
-                    color: Colors.red,
-                  )
+                  SertifikatPenyelesaianTab(),
                 ],
               ),
             ),
