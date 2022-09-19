@@ -1,11 +1,20 @@
 class SertifikatEntity {
   bool? success;
   List<SertifikatDataEntity>? certificates;
+  bool error = false;
+  String messgaeError = '';
 
   SertifikatEntity({
     this.success,
     this.certificates,
   });
+
+  SertifikatEntity.withError(String errorMessage) {
+    success = false;
+    certificates = <SertifikatDataEntity>[];
+    error = true;
+    messgaeError = errorMessage;
+  }
 }
 
 class SertifikatDataEntity {

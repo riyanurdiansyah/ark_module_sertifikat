@@ -15,6 +15,7 @@ permission_handler=/Users/arkademiflutter/Dev/flutter/.pub-cache/hosted/pub.dart
 permission_handler_android=/Users/arkademiflutter/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler_android-9.0.2+1/
 permission_handler_apple=/Users/arkademiflutter/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler_apple-9.0.4/
 permission_handler_windows=/Users/arkademiflutter/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler_windows-0.1.0/
+share=/Users/arkademiflutter/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/
 shared_preferences=/Users/arkademiflutter/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.15/
 shared_preferences_android=/Users/arkademiflutter/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.13/
 shared_preferences_ios=/Users/arkademiflutter/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_ios-2.1.1/

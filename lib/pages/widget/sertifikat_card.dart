@@ -15,12 +15,14 @@ class SertifikatCard extends StatelessWidget {
     required this.onTapUnduh,
     required this.downloadProgress,
     required this.index,
+    required this.onTapShare,
   }) : super(key: key);
 
   final String imageUrl;
   final String title;
   final String date;
   final VoidCallback onTapUnduh;
+  final VoidCallback onTapShare;
   final RxList<int> downloadProgress;
   final int index;
 
@@ -78,8 +80,11 @@ class SertifikatCard extends StatelessWidget {
         ),
         ExpandableNotifier(
           child: ScrollOnExpand(
+            scrollOnCollapse: false,
+            scrollOnExpand: false,
             child: ExpandablePanel(
               theme: const ExpandableThemeData(
+                useInkWell: true,
                 hasIcon: false,
                 headerAlignment: ExpandablePanelHeaderAlignment.center,
                 expandIcon: Icons.add_rounded,
@@ -431,93 +436,89 @@ class SertifikatCard extends StatelessWidget {
                   const SizedBox(
                     width: 6,
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: SizedBox(
+                  InkWell(
+                    onTap: () => onTapUnduh(),
+                    child: Container(
                       height: 30,
-                      child: OutlinedButton(
-                        onPressed: () => onTapUnduh(),
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(
-                            color: Color(0xFF838589),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        child: Obx(
-                          () => downloadProgress[index] == 0 ||
-                                  downloadProgress[index] == 100 ||
-                                  downloadProgress[index] == -1
-                              ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    const Icon(
-                                      Icons.download_rounded,
-                                      color: Color(0xFF0977BE),
-                                      size: 14,
-                                    ),
-                                    Text(
-                                      'Unduh',
-                                      style: AppStyleText.styleMontserrat(
-                                        fontSize: 9,
-                                        color: const Color(0xFF0977BE),
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    )
-                                  ],
-                                )
-                              : Text(
-                                  'Progress ${downloadProgress[index]}%',
-                                  style: AppStyleText.styleMontserrat(
-                                    fontSize: 9,
-                                    color: const Color(0xFF0977BE),
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          color: const Color(0xFF838589),
+                          width: 0.56,
                         ),
                       ),
+                      child: Obx(() {
+                        if (downloadProgress[index] == 0 ||
+                            downloadProgress[index] == 100 ||
+                            downloadProgress[index] == -1) {
+                          return Row(
+                            children: [
+                              const Icon(
+                                Icons.download_rounded,
+                                color: Color(0xFF0977BE),
+                                size: 10,
+                              ),
+                              const SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                'Unduh',
+                                style: AppStyleText.styleMontserrat(
+                                  fontSize: 9,
+                                  color: const Color(0xFF0977BE),
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )
+                            ],
+                          );
+                        } else {
+                          return Text(
+                            'Progress ${downloadProgress[index]}%',
+                            style: AppStyleText.styleMontserrat(
+                              fontSize: 9,
+                              color: const Color(0xFF0977BE),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          );
+                        }
+                      }),
                     ),
                   ),
                   const SizedBox(
                     width: 6,
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: SizedBox(
+                  InkWell(
+                    onTap: () => onTapShare(),
+                    child: Container(
                       height: 30,
-                      child: OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(
-                            color: Color(0xFF838589),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          color: const Color(0xFF838589),
+                          width: 0.56,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            const Icon(
-                              Icons.share_rounded,
-                              color: Color(0xFF0977BE),
-                              size: 12,
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.share_rounded,
+                            color: Color(0xFF0977BE),
+                            size: 12,
+                          ),
+                          const SizedBox(
+                            width: 6,
+                          ),
+                          Text(
+                            'Bagikan',
+                            style: AppStyleText.styleMontserrat(
+                              fontSize: 9,
+                              color: const Color(0xFF0977BE),
+                              fontWeight: FontWeight.w700,
                             ),
-                            const SizedBox(
-                              width: 6,
-                            ),
-                            Text(
-                              'Bagikan',
-                              style: AppStyleText.styleMontserrat(
-                                fontSize: 9,
-                                color: const Color(0xFF0977BE),
-                                fontWeight: FontWeight.w700,
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ),
                   ),

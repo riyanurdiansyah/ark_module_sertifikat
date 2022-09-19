@@ -1,4 +1,6 @@
 import 'package:ark_module_sertifikat/ark_module_sertifikat.dart';
+import 'package:ark_module_sertifikat/pages/widget/sertifikat_card_shimmer.dart';
+import 'package:ark_module_sertifikat/pages/widget/sertifikat_empty_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -102,22 +104,74 @@ class SertifikatPenyelesaianTab extends StatelessWidget {
             const SizedBox(
               height: 18,
             ),
-            Obx(() {
-              final sertif = _sC.sertifikat.value.certificates!;
-              return Column(
-                children: List.generate(
-                  sertif.length,
-                  (i) => SertifikatCard(
-                    imageUrl: sertif[i].certificateUrl!,
-                    title: sertif[i].courseName!,
-                    date: sertif[i].certificateDate!,
-                    onTapUnduh: () => _sC.fnCheckPermission(i),
-                    downloadProgress: _sC.progresDownload,
-                    index: i,
-                  ),
-                ),
-              );
-            }),
+            Obx(
+              () {
+                if (_sC.isLoading.value) {
+                  return Column(
+                    children: List.generate(
+                      3,
+                      (index) => const SertifikatCardShimmer(),
+                    ),
+                  );
+                } else if (_sC.sertifikat.value.error) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.running_with_errors_rounded,
+                        size: 125,
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        _sC.sertifikat.value.messgaeError,
+                        style: AppStyleText.styleMontserrat(
+                          fontSize: 14,
+                          color: Colors.grey.shade500,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      ElevatedButton(
+                        onPressed: () => _sC.fnGetAllCertificate(),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.blue,
+                        ),
+                        child: Text(
+                          'Refresh',
+                          style: AppStyleText.styleMontserrat(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                } else if (_sC.sertifikat.value.certificates!.isEmpty) {
+                  return const SertifikatEmptyWidget();
+                } else {
+                  final sertif = _sC.sertifikat.value.certificates!;
+                  return Column(
+                    children: List.generate(
+                      sertif.length,
+                      (i) => SertifikatCard(
+                        imageUrl: sertif[i].certificateUrl!,
+                        title: sertif[i].courseName!,
+                        date: sertif[i].certificateDate!,
+                        onTapUnduh: () => _sC.fnCheckPermission(i),
+                        onTapShare: () => _sC.fnSharedCertificate(),
+                        downloadProgress: _sC.progresDownload,
+                        index: i,
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),

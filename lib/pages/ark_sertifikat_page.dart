@@ -1,4 +1,5 @@
 import 'package:ark_module_sertifikat/ark_module_sertifikat.dart';
+import 'package:ark_module_sertifikat/pages/widget/custom_popup_menu.dart';
 import 'package:ark_module_sertifikat/pages/widget/sertifikat_penyelesaian_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -47,22 +48,31 @@ class ArkSertifikatPage extends StatelessWidget {
                   flex: 6,
                   child: SizedBox(
                     height: 40,
-                    child: TextField(
-                      controller: _sC.txSearch,
-                      onChanged: (query) => _sC.fnOnSearchCertificate(query),
-                      style: AppStyleText.styleMontserrat(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                        color: Colors.black,
-                      ),
-                      decoration: AppStyleTextField.customOutlined(
-                        '',
-                        'Cari sertifikat',
-                        const Icon(
-                          Icons.search_rounded,
-                          size: 18,
+                    child: Obx(
+                      () => TextField(
+                        controller: _sC.txSearch,
+                        onChanged: (query) => _sC.fnOnSearchCertificate(query),
+                        style: AppStyleText.styleMontserrat(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          color: Colors.black,
                         ),
-                        null,
+                        decoration: AppStyleTextField.customOutlined(
+                          'Cari sertifikat',
+                          const Icon(
+                            Icons.search_rounded,
+                            size: 18,
+                          ),
+                          _sC.isHaveQuerySearch.value
+                              ? GestureDetector(
+                                  onTap: () => _sC.fnOnSearchCertificate(''),
+                                  child: const Icon(
+                                    Icons.close_rounded,
+                                    size: 18,
+                                  ),
+                                )
+                              : null,
+                        ),
                       ),
                     ),
                   ),
@@ -72,24 +82,59 @@ class ArkSertifikatPage extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 5,
-                  child: SizedBox(
-                    height: 40,
-                    child: TextField(
-                      style: AppStyleText.styleMontserrat(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                        color: Colors.black,
-                      ),
-                      decoration: AppStyleTextField.customOutlined(
-                        'Urutkan',
-                        '',
-                        null,
-                        const Icon(
-                          Icons.expand_more_rounded,
-                          size: 18,
+                  child: CustomPopUpMenu(
+                    icon: Container(
+                      height: 40,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          width: 0.6,
+                          color: const Color(0xFFC0C2C6),
                         ),
                       ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Urutkan',
+                            style: AppStyleText.styleMontserrat(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 11,
+                              color: const Color(0xFFACAEB2),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.expand_more_rounded,
+                            size: 18,
+                          ),
+                        ],
+                      ),
                     ),
+                    listMenu: <PopupMenuItem>[
+                      PopupMenuItem(
+                        onTap: () => _sC.fnSortCertificate(),
+                        child: Text(
+                          'Abjad',
+                          style: AppStyleText.styleMontserrat(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        onTap: () => _sC.fnSortCertificate(),
+                        child: Text(
+                          'Terbaru',
+                          style: AppStyleText.styleMontserrat(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -108,6 +153,8 @@ class ArkSertifikatPage extends StatelessWidget {
                     child: FittedBox(
                       fit: BoxFit.contain,
                       child: Container(
+                        alignment: Alignment.center,
+                        height: 30,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 13, vertical: 8),
                         decoration: BoxDecoration(
@@ -140,21 +187,23 @@ class ArkSertifikatPage extends StatelessWidget {
                     flex: 1,
                     child: InkWell(
                       onTap: () => _sC.fnOnChangeSertif(1),
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 13, vertical: 8),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 30,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 13, vertical: 8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: _sC.indexTabSertif.value == 1
+                                ? const Color(0xFFDEF1FD)
+                                : Colors.white,
+                            border: Border.all(
                               color: _sC.indexTabSertif.value == 1
                                   ? const Color(0xFFDEF1FD)
-                                  : Colors.white,
-                              border: Border.all(
-                                color: _sC.indexTabSertif.value == 1
-                                    ? const Color(0xFFDEF1FD)
-                                    : Colors.grey.shade300,
-                              )),
+                                  : Colors.grey.shade300,
+                            )),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
                           child: Text(
                             'Sertifikat Kompetensi Kelulusan',
                             style: AppStyleText.styleMontserrat(
@@ -177,23 +226,17 @@ class ArkSertifikatPage extends StatelessWidget {
             height: 20,
           ),
           Expanded(
-            child: Obx(() {
-              if (_sC.isLoading.value) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                return IndexedStack(
-                  index: _sC.indexTabSertif.value,
-                  children: [
-                    SertifikatPenyelesaianTab(),
-                    Container(
-                      color: Colors.red,
-                    )
-                  ],
-                );
-              }
-            }),
+            child: Obx(
+              () => IndexedStack(
+                index: _sC.indexTabSertif.value,
+                children: [
+                  SertifikatPenyelesaianTab(),
+                  Container(
+                    color: Colors.red,
+                  )
+                ],
+              ),
+            ),
           ),
         ],
       ),

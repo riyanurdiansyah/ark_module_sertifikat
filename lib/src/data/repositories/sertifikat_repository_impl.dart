@@ -20,7 +20,12 @@ class SertifikatRepositoryImpl implements SertifikatRepository {
       if (e is CustomException) {
         return Left(HttpFailure(e.code, e.message));
       } else {
-        return Left(HttpFailure(500, e.toString()));
+        return const Left(
+          HttpFailure(
+            500,
+            'Error... failed connect to server \nPlease check your connection',
+          ),
+        );
       }
     }
   }

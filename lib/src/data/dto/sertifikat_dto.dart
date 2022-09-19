@@ -7,6 +7,12 @@ class SertifikatDTO implements SertifikatEntity {
   @override
   List<SertifikatDataEntity>? certificates;
 
+  @override
+  bool error = false;
+
+  @override
+  String messgaeError = '';
+
   SertifikatDTO({
     required this.success,
     required this.certificates,
